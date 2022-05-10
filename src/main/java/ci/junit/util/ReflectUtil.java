@@ -8,13 +8,9 @@
  * <author>          <time>          <version>          <desc>
  * 作者姓名           修改时间           版本号              描述
  */
-package util;
+package ci.junit.util;
 
 import java.lang.reflect.Field;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 〈〉
@@ -35,7 +31,7 @@ public class ReflectUtil {
         field.setAccessible(true);
         String fieldName = field.getName();
         if ("serialVersionUID".equals(fieldName)) {
-            return "";
+            return null;
         }
         Object filedValue = null;
         try {
