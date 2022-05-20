@@ -1,25 +1,27 @@
 package ci.junit.util;
 
 
-import ci.junit.model.BaseRes;
+import ci.junit.model.BaseVO;
+import ci.junit.model.PagingResVO;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.parser.ParserConfig;
-import jdk.jfr.ContentType;
 
 import java.io.*;
 import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 /**
- * @author JF
+ * @author Hsiong
  * @version 1.0.0
  * @desc 〈〉
  * @date 2020/7/9 5:42 下午
@@ -44,7 +46,7 @@ public class HttpUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return getResponseString(connection, response);
+        return getResponse(connection, response);
     }
 
     /**
@@ -71,8 +73,64 @@ public class HttpUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return getResponseString(connection, response);
+        return getResponse(connection, response);
     }
+
+    /**
+     *
+     * 向指定URL发送 delete 方法的请求
+     * @param url   发送请求的URL
+     * @param paramObj 请求参数，以对象的形式
+     * @param header 请求头, "key1":"value1"的形式
+     * @param <T>
+     * @param <M>
+     * @return String 所代表远程资源的响应结果
+     */
+    public static <T,M> M sendDelete(String url, T paramObj, Map<String, String> header, Class<M> response) {
+        HttpURLConnection connection = null;
+        try {
+            connection = initGetConnection(url, paramObj);
+            connection.setRequestMethod("DELETE");
+            if (header != null) {
+                for (Map.Entry<String, String> entry : header.entrySet()) {
+                    connection.setRequestProperty(entry.getKey(), entry.getValue());
+                }
+            }
+            // 建立实际的连接
+            connection.connect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return getResponse(connection, response);
+    }
+
+    /**
+     * 发送分页请求
+     * @param url
+     * @param paramObj
+     * @param header
+     * @param response
+     * @param <T>
+     * @param <M>
+     * @return
+     */
+    public static <T,M> List<M> sendGetPage(String url, T paramObj, Map<String, String> header, Class<M> response) {
+        HttpURLConnection connection = null;
+        try {
+            connection = initGetConnection(url, paramObj);
+            if (header != null) {
+                for (Map.Entry<String, String> entry : header.entrySet()) {
+                    connection.setRequestProperty(entry.getKey(), entry.getValue());
+                }
+            }
+            // 建立实际的连接
+            connection.connect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return getResponsePage(connection, response);
+    }
+
 
     /**
      *
@@ -125,7 +183,7 @@ public class HttpUtil {
             e.getStackTrace();
         }
 
-        return getResponseString(connection, responseClass);
+        return getResponse(connection, responseClass);
     }
 
 
@@ -236,7 +294,7 @@ public class HttpUtil {
             e.printStackTrace();
         }
 
-        return getResponseString(connection, responseClass);
+        return getResponse(connection, responseClass);
     }
 
     /******************************** 私有方法 ****************************************/
@@ -304,11 +362,11 @@ public class HttpUtil {
     }
 
     /**
-     * 从链接中获取响应字符串
+     * 获取返回值
      * @param connection
      * @return
      */
-    private static <M> M getResponseString(HttpURLConnection connection, Class<M> responseClass) {
+    private static String getResponseString(HttpURLConnection connection) {
         String result = null;
 
         Long time1 = System.currentTimeMillis();
@@ -343,8 +401,29 @@ public class HttpUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return result;
+    }
 
+    /**
+     * 从链接中获取响应字符串
+     * @param connection
+     * @return
+     */
+    private static <M> M getResponse(HttpURLConnection connection, Class<M> responseClass) {
+        String result = getResponseString(connection);
         return getRet(result, responseClass);
+    }
+
+    /**
+     * 从链接获取分页
+     * @param connection
+     * @param responseClass
+     * @param <M>
+     * @return
+     */
+    private static <M> List<M> getResponsePage(HttpURLConnection connection, Class<M> responseClass) {
+        String result = getResponseString(connection);
+        return getRetPage(result, responseClass);
     }
 
 
@@ -368,22 +447,51 @@ public class HttpUtil {
      * @see com.alibaba.fastjson.util.TypeUtils#castToJavaBean(Map, Class, ParserConfig)
      * // fastjson mapToJavaBean
      *
+     * @see TypeReference#TypeReference(Type...)
+     * // 实现逻辑
+     * fastjson 用 ParameterizedType.class 通过递归构造了一个多层泛型的类型, 简直代码之精髓!
+     *
      *
      */
     private static  <T> T getRet(String ret, Class<T> responseClass) {
-        BaseRes<JSONObject> baseRes = JSONObject.parseObject(ret, BaseRes.class);
+        BaseVO<T> baseRes = JSONObject.parseObject(ret, new TypeReference<BaseVO<T>>(responseClass) {});
+        if (baseRes == null) {
+            return null;
+        }
         if ("0000".equals(baseRes.getCode())) {
             try {
                 if (responseClass == String.class ) {
                     return (T) baseRes.getMessage();
                 }
 
-                JSONObject jsonObject = baseRes.getBody();
-                T t = JSON.toJavaObject(jsonObject, responseClass);
+                T t = baseRes.getBody();
                 if (t == null) {
                     throw new IllegalArgumentException("ret null!");
                 }
                 return t;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            throw new IllegalArgumentException(baseRes.getMessage());
+        }
+        return null;
+    }
+
+    private static <T> List<T> getRetPage(String ret, Class<T> responseClass) {
+        TypeReference<BaseVO<PagingResVO<T>>> typeReference = new TypeReference<BaseVO<PagingResVO<T>>>(responseClass) {};
+        BaseVO<PagingResVO<T>> baseRes = JSONObject.parseObject(ret, typeReference);
+        if ("0000".equals(baseRes.getCode())) {
+            try {
+                if (responseClass == String.class ) {
+                    throw new Exception(baseRes.getMessage());
+                }
+                PagingResVO<T> pagingBody = baseRes.getBody();
+                List<T> list = pagingBody.getList();
+                if (list == null) {
+                    throw new IllegalArgumentException("ret null!");
+                }
+                return list;
             } catch (Exception e) {
                 e.printStackTrace();
             }
