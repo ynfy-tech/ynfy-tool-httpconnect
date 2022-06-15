@@ -157,6 +157,7 @@ public class HttpUtil {
             connection.setRequestProperty("accept", "*/*");
             connection.setRequestProperty("connection", "Keep-Alive");
             connection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+            connection.setRequestMethod("POST");
             connection.setConnectTimeout(30000);
             connection.setReadTimeout(30000);
             // 发送POST请求必须设置如下两行
@@ -172,20 +173,23 @@ public class HttpUtil {
         }
 
 
-        byte[] content = null;
         if (param != null) {
-            content = param.toString().getBytes(StandardCharsets.UTF_8);
+            byte[] content = param.toString().getBytes(StandardCharsets.UTF_8);
+            try (OutputStream os = connection.getOutputStream();) {
+                os.write(content);
+            } catch (Exception e) {
+                e.getStackTrace();
+            }
         }
 
-        try (OutputStream os = connection.getOutputStream();) {
-            os.write(content);
-        } catch (Exception e) {
-            e.getStackTrace();
-        }
+
 
         return getResponse(connection, responseClass);
     }
 
+    public static <M> M sendObjPost(String url, Object param, Map<String, String> header, Class<M> responseClass) {
+        return sendPost(url, JSON.toJSONString(param), header, responseClass);
+    }
 
     private final static String BOUNDARY = UUID.randomUUID().toString()
                                                .toLowerCase().replaceAll("-", "");// 边界标识
@@ -214,10 +218,10 @@ public class HttpUtil {
             connection.setUseCaches(false);
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Cache-Control", "no-cache");
-            connection.setRequestProperty("Charset", "UTF-8");
+            connection.setRequestProperty("Charset", StandardCharsets.UTF_8.name());
             connection.setInstanceFollowRedirects(true);
             connection.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
-            connection.setRequestProperty("Charset", "UTF-8");
+            connection.setRequestProperty("Charset", StandardCharsets.UTF_8.name());
             connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + BOUNDARY);
 
             if (header != null) {
@@ -313,8 +317,8 @@ public class HttpUtil {
         conn.setRequestProperty("accept", "*/*");
         conn.setRequestProperty("connection", "Keep-Alive");
         conn.setRequestProperty("Content-Type", "application/json; utf-8");
-        conn.setConnectTimeout(3000);
-        conn.setReadTimeout(3000);
+        conn.setConnectTimeout(0);
+        conn.setReadTimeout(0);
         return conn;
     }
 
