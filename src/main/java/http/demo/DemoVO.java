@@ -1,4 +1,4 @@
-package ci.junit.model;
+package http.demo;
 
 import lombok.Data;
 
@@ -6,10 +6,11 @@ import java.io.Serializable;
 
 
 /**
+ * 返回统一类, 可自定义
  * description: BaseRes
  */
 @Data
-public class BaseVO<T> implements Serializable {
+public class DemoVO<T> implements Serializable {
 
     /**
      * 处理结果代码
@@ -22,14 +23,14 @@ public class BaseVO<T> implements Serializable {
     private String status;
 
     /**
-     * 处理结果描述信息
-     */
-    private String message;
-
-    /**
      * 请求结果生成时间戳
      */
     private String time;
+
+    /**
+     * 处理结果描述信息
+     */
+    private String message;
 
 
     /**
