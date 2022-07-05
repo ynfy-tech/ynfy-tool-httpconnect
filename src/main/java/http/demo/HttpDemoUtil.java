@@ -1,13 +1,4 @@
-/**
- * Copyright (C), 2006-2022,
- *
- * @FileName: HttpDemoUtil
- * @Author: JF
- * @Date: 2022/6/27 17:13
- * @Description: History:
- * <author>          <time>          <version>          <desc>
- * 作者姓名           修改时间           版本号              描述
- */
+
 package http.demo;
 
 import com.alibaba.fastjson.JSON;
@@ -19,11 +10,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 〈〉
+ * http 工具示例类
  *
- * @author JF
- * @create 2022/6/27
- * @since 1.0.0
+ * @author Hsiong
+ * @version  1.0.0
+ * @since  2020/7/9 5:42 下午
  */
 public class HttpDemoUtil {
 
@@ -33,8 +24,9 @@ public class HttpDemoUtil {
      * @param url      发送请求的URL
      * @param paramObj 请求参数，以对象的形式
      * @param header   请求头, "key1":"value1"的形式
-     * @param <T>
-     * @param <M>
+     * @param responseClass 返回子类型
+     * @param <T> 返回类型
+     * @param <M> 返回子类型
      * @return String 所代表远程资源的响应结果
      */
     public static <T, M> M sendGet(String url, T paramObj, Map<String, String> header, Class<M> responseClass) {
@@ -48,8 +40,9 @@ public class HttpDemoUtil {
      * @param url      发送请求的URL
      * @param paramObj 请求参数，以对象的形式
      * @param header   请求头, "key1":"value1"的形式
-     * @param <T>
-     * @param <M>
+     * @param responseClass 返回子类型
+     * @param <T> 返回类型
+     * @param <M> 返回子类型
      * @return String 所代表远程资源的响应结果
      */
     public static <T, M> M sendDelete(String url, T paramObj, Map<String, String> header, Class<M> responseClass) {
@@ -58,15 +51,16 @@ public class HttpDemoUtil {
     }
 
     /**
+     *
      * 发送分页请求
      *
-     * @param url
-     * @param paramObj
-     * @param header
-     * @param responseClass
-     * @param <T>
-     * @param <M>
-     * @return
+     * @param url 接口地址
+     * @param paramObj 返回类型
+     * @param header 加密头
+     * @param responseClass 返回子类型
+     * @return T 所代表远程资源的响应结果
+     * @param <T> 返回类型
+     * @param <M> 返回子类型
      */
     public static <T, M> List<M> sendGetPage(String url,
                                              T paramObj,
@@ -78,14 +72,17 @@ public class HttpDemoUtil {
 
 
     /**
+     *
      * 向指定 URL 发送POST方法的请求
      *
      * @param url           发送请求的 URL
-     * @param param         请求参数，请求参数应该是 name1=value1&name2=value2 的形式。
-     * @param responseClass
-     * @param <M>
+     * @param param         请求参数，请求参数应该是 name1=value1 name2=value2 的形式。
+     * @param header 请求头
+     * @param <M> 返回子类型
+     * @param responseClass 返回子类型
      * @return 所代表远程资源的响应结果
-     * @apiNote Content type 'application/json;charset=UTF-8' not supported
+     *
+     * Content type 'application/json;charset=UTF-8' not supported
      * // 请考虑接口入参的情况
      */
     public static <M> M sendPost(String url, String param, Map<String, String> header, Class<M> responseClass) {
@@ -100,13 +97,14 @@ public class HttpDemoUtil {
     /**
      * 发送 post 文件请求
      *
-     * @param url
-     * @param paramObj
-     * @param dir
-     * @param responseClass
-     * @param <T>
-     * @param <M>
-     * @return
+     * @param url 远程接口地址
+     * @param paramObj 返回类型
+     * @param dir 文件路径
+     * @param header 消息头
+     * @param responseClass 子类型
+     * @param <T> 返回类型
+     * @param <M> 子类型
+     * @return T 所代表远程资源的响应结果
      */
     public static <T, M> M sendPostFile(String url,
                                         T paramObj,
@@ -122,9 +120,9 @@ public class HttpDemoUtil {
     /**
      * 将返回值解析为泛型
      *
-     * @param result
-     * @param responseClass
-     * @apiNote // 实现 java 泛型声明 java 实例
+     * @param result 返回字符串
+     * @param responseClass 返回子类型
+     * // 实现 java 泛型声明 java 实例
      * BaseRes s = new BaseRes(responseClass.getDeclaredConstructor().newInstance());
      * @see com.alibaba.fastjson.parser.DefaultJSONParser#parse()
      * alibaba-fastjson 不支持泛型转换的原因:
@@ -137,6 +135,9 @@ public class HttpDemoUtil {
      * @see com.alibaba.fastjson.TypeReference#TypeReference(java.lang.reflect.Type...)
      * 实现逻辑:
      * fastjson 用 ParameterizedType.class 通过递归构造了一个多层泛型的类型, 简直代码之精髓!
+     *
+     * @param <T> 返回类型
+     * @return T 所代表远程资源的响应结果
      */
     private static <T> T getRet(String result, Class<T> responseClass) {
         DemoVO<T> baseRes = JSONObject.parseObject(result, new TypeReference<>(responseClass) {
@@ -167,10 +168,10 @@ public class HttpDemoUtil {
     /**
      * 将返回值解析为分页泛型
      *
-     * @param result
-     * @param responseClass
-     * @param <T>
-     * @return
+     * @param result 结果字符串
+     * @param responseClass 返回嵌套类型
+     * @param <T> 返回类型 
+     * @return 所代表远程资源的响应结果
      */
     private static <T> List<T> getRetPage(String result, Class<T> responseClass) {
         TypeReference<DemoVO<DemoPagingVO<T>>> typeReference = new TypeReference<>(responseClass) {
@@ -196,5 +197,9 @@ public class HttpDemoUtil {
         return null;
     }
 
-
+    /**
+     * Default constructor added by Java.
+     */
+    public HttpDemoUtil() {
+    }
 }

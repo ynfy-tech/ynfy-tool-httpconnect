@@ -1,6 +1,7 @@
 package http.demo;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 
@@ -9,7 +10,8 @@ import java.io.Serializable;
  * 返回统一类, 可自定义
  * description: BaseRes
  */
-@Data
+@Getter
+@Setter
 public class DemoVO<T> implements Serializable {
 
     /**
@@ -38,4 +40,11 @@ public class DemoVO<T> implements Serializable {
      */
     private T body;
 
+    /**
+     * Default constructor added by Java.
+     * @param code 处理结果代码
+     */
+    public DemoVO(String code) {
+        this.code = code;
+    }
 }

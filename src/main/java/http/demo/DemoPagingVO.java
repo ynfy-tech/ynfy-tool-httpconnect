@@ -1,15 +1,17 @@
 package http.demo;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.List;
 
 /**
  * 分页返回信息
- * @param <T>
+ * @param <T> 返回类型
  */
-@Data
+@Getter
+@Setter
 public class DemoPagingVO<T> implements Serializable {
 
 
@@ -22,4 +24,9 @@ public class DemoPagingVO<T> implements Serializable {
      */
     private List<T> list;
 
+    /**
+     * Default constructor added by Java.
+     */
+    public DemoPagingVO() {
+    }
 }

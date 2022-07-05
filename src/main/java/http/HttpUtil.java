@@ -14,10 +14,10 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
+ * http 工具类
  * @author Hsiong
- * @version 1.0.0
- * @desc 〈〉
- * @date 2020/7/9 5:42 下午
+ * @version  1.0.0
+ * @since  2020/7/9 5:42 下午
  */
 public class HttpUtil {
 
@@ -27,8 +27,7 @@ public class HttpUtil {
      * @param url   发送请求的URL
      * @param paramObj 请求参数，以对象的形式
      * @param header 请求头, "key1":"value1"的形式
-     * @param <T>
-     * @param <M>
+     * @param <T> 泛型入参
      * @return String 所代表远程资源的响应结果
      */
     public static <T> String sendGet(String url, T paramObj, Map<String, String> header) {
@@ -54,8 +53,7 @@ public class HttpUtil {
      * @param url   发送请求的URL
      * @param paramObj 请求参数，以对象的形式
      * @param header 请求头, "key1":"value1"的形式
-     * @param <T>
-     * @param <M>
+     * @param <T> 泛型入参
      * @return String 所代表远程资源的响应结果
      */
     public static <T> String sendDelete(String url, T paramObj, Map<String, String> header) {
@@ -81,14 +79,13 @@ public class HttpUtil {
      *
      * 向指定 URL 发送POST方法的请求
      *
-     * @apiNote Content type 'application/json;charset=UTF-8' not supported
+     * Content type 'application/json;charset=UTF-8' not supported
      * // 请考虑接口入参的情况
      *
      * @param url   发送请求的 URL
-     * @param param 请求参数，请求参数应该是 name1=value1&name2=value2 的形式。
-     * @param responseClass
-     * @param <M>
-     * @return 所代表远程资源的响应结果
+     * @param param 请求参数，请求参数应该是 name1=value1 name2=value2 的形式。
+     * @param header 请求头
+     * @return T 所代表远程资源的响应结果
      */
     public static String sendPost(String url, String param, Map<String, String> header) {
 
@@ -129,24 +126,41 @@ public class HttpUtil {
         return getResponseString(connection);
     }
 
+    /**
+     * 发送对象 post
+     * @param url 远程接口地址
+     * @param param 请求对象
+     * @param header header
+     * @return T 所代表远程资源的响应结果
+     */
     public static String sendObjPost(String url, Object param, Map<String, String> header) {
         return sendPost(url, JSON.toJSONString(param), header);
     }
 
+    /**
+     * 边界标识
+     */
     private final static String BOUNDARY = UUID.randomUUID().toString()
-                                               .toLowerCase().replaceAll("-", "");// 边界标识
-    private final static String PREFIX = "--";// 必须存在
+                                               .toLowerCase().replaceAll("-", "");
+
+    /**
+     * 必须存在
+     */
+    private final static String PREFIX = "--";
+
+    /**
+     * 字段结束
+     */
     private final static String LINE_END = "\r\n";
 
     /**
      * 发送 post 文件请求
-     * @param url
-     * @param paramObj
-     * @param dir
-     * @param responseClass
-     * @param <T>
-     * @param <M>
-     * @return
+     * @param url 远程接口路径
+     * @param paramObj 泛型出参
+     * @param dir 文件本地路径
+     * @param header 请求头
+     * @param <T> 泛型入参
+     * @return T 所代表远程资源的响应结果
      */
     public static <T> String sendPostFile(String url, T paramObj, String dir, Map<String, String> header) {
         String urlParams = appendGetUrlParam(url, paramObj);
@@ -247,9 +261,9 @@ public class HttpUtil {
 
     /**
      * 设置通用的请求属性
-     * @param url
-     * @return
-     * @throws IOException
+     * @param url 远程接口
+     * @return HttpURLConnection
+     * @throws IOException 异常
      */
     private static HttpURLConnection getConnection(String url) throws IOException {
         URL realUrl = new URL(url);
@@ -266,10 +280,10 @@ public class HttpUtil {
 
     /**
      * 拼接 get 请求参数
-     * @param url
-     * @param paramObj
-     * @param <T>
-     * @return
+     * @param url 接口地址
+     * @param paramObj 返回泛型
+     * @param <T> 返回类型
+     * @return T 返回类型
      */
     private static <T> String appendGetUrlParam(String url, T paramObj) {
         StringBuilder urlNameString = new StringBuilder(url);
@@ -300,11 +314,11 @@ public class HttpUtil {
 
     /**
      * 获取URLConnection
-     * @param url
-     * @param paramObj
-     * @param <T>
-     * @return
-     * @throws IOException
+     * @param url 远程接口
+     * @param paramObj 返回类型
+     * @param <T> 返回类型
+     * @return T 所代表远程资源的响应结果
+     * @throws IOException 异常
      */
     private static <T> HttpURLConnection initGetConnection(String url, T paramObj) throws IOException {
         String urlParams = appendGetUrlParam(url, paramObj);
@@ -315,8 +329,8 @@ public class HttpUtil {
 
     /**
      * 获取返回值
-     * @param connection
-     * @return
+     * @param connection connection
+     * @return String 所代表远程资源的响应结果
      */
     private static String getResponseString(HttpURLConnection connection) {
         String result = null;
@@ -356,5 +370,9 @@ public class HttpUtil {
         return result;
     }
 
-
+    /**
+     * Default constructor added by Java.
+     */
+    public HttpUtil() {
+    }
 }
