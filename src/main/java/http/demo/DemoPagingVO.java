@@ -26,7 +26,11 @@ public class DemoPagingVO<T> implements Serializable {
 
     /**
      * Default constructor added by Java.
+     * @param total 总记录数
+     * @param list 结果
      */
-    public DemoPagingVO() {
+    public DemoPagingVO(long total, List<T> list) {
+        this.total = total;
+        this.list = list;
     }
 }

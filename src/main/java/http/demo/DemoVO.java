@@ -1,5 +1,6 @@
 package http.demo;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +13,7 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
+@AllArgsConstructor
 public class DemoVO<T> implements Serializable {
 
     /**
@@ -39,12 +41,5 @@ public class DemoVO<T> implements Serializable {
      * 处理结果数据信息
      */
     private T body;
-
-    /**
-     * Default constructor added by Java.
-     * @param code 处理结果代码
-     */
-    public DemoVO(String code) {
-        this.code = code;
-    }
+    
 }

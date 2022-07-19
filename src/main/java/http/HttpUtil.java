@@ -22,8 +22,10 @@ import java.util.UUID;
 public class HttpUtil {
 
     /**
-     *
      * 向指定URL发送GET方法的请求
+     * 
+     * 注意: get 请求不支持中文, 需要 UrlEncode 对参数部分进行编码
+     * 
      * @param url   发送请求的URL
      * @param paramObj 请求参数，以对象的形式
      * @param header 请求头, "key1":"value1"的形式
@@ -288,6 +290,9 @@ public class HttpUtil {
     private static <T> String appendGetUrlParam(String url, T paramObj) {
         StringBuilder urlNameString = new StringBuilder(url);
         if (paramObj != null) {
+            if (String.class.equals(paramObj.getClass())) {
+                throw new IllegalArgumentException("Param can't be string! ");
+            }
             urlNameString.append("?");
             Class c = paramObj.getClass();
             Field[] fields = c.getDeclaredFields();
