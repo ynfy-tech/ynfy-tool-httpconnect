@@ -1,6 +1,5 @@
 # http-util-java
-
-A http util for java. 
+A http util for java.  
 
 # Maven Dependency
 ```
