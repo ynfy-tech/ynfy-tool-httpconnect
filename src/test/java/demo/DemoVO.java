@@ -41,5 +41,5 @@ public class DemoVO<T> implements Serializable {
      * 处理结果数据信息
      */
     private T body;
-    
+
 }
