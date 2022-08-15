@@ -1,5 +1,5 @@
 
-package http.demo;
+package demo;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;

@@ -7,6 +7,6 @@ A http util for java.
 <dependency>
     <groupId>tech.ynfy</groupId>
     <artifactId>http-util-java</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 </dependency>
 ```

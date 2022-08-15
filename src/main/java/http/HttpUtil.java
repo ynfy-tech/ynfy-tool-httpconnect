@@ -15,21 +15,22 @@ import java.util.UUID;
 
 /**
  * http 工具类
+ *
  * @author Hsiong
- * @version  1.0.0
- * @since  2020/7/9 5:42 下午
+ * @version 1.0.0
+ * @since 2020/7/9 5:42 下午
  */
 public class HttpUtil {
 
     /**
      * 向指定URL发送GET方法的请求
-     * 
+     * <p>
      * 注意: get 请求不支持中文, 需要 UrlEncode 对参数部分进行编码
-     * 
-     * @param url   发送请求的URL
+     *
+     * @param url      发送请求的URL
      * @param paramObj 请求参数，以对象的形式
-     * @param header 请求头, "key1":"value1"的形式
-     * @param <T> 泛型入参
+     * @param header   请求头, "key1":"value1"的形式
+     * @param <T>      泛型入参
      * @return String 所代表远程资源的响应结果
      */
     public static <T> String sendGet(String url, T paramObj, Map<String, String> header) {
@@ -50,12 +51,12 @@ public class HttpUtil {
     }
 
     /**
-     *
      * 向指定URL发送 delete 方法的请求
-     * @param url   发送请求的URL
+     *
+     * @param url      发送请求的URL
      * @param paramObj 请求参数，以对象的形式
-     * @param header 请求头, "key1":"value1"的形式
-     * @param <T> 泛型入参
+     * @param header   请求头, "key1":"value1"的形式
+     * @param <T>      泛型入参
      * @return String 所代表远程资源的响应结果
      */
     public static <T> String sendDelete(String url, T paramObj, Map<String, String> header) {
@@ -78,14 +79,13 @@ public class HttpUtil {
 
 
     /**
-     *
      * 向指定 URL 发送POST方法的请求
-     *
+     * <p>
      * Content type 'application/json;charset=UTF-8' not supported
      * // 请考虑接口入参的情况
      *
-     * @param url   发送请求的 URL
-     * @param param 请求参数，请求参数应该是 name1=value1 name2=value2 的形式。
+     * @param url    发送请求的 URL
+     * @param param  请求参数，请求参数应该是 name1=value1 name2=value2 的形式。
      * @param header 请求头
      * @return T 所代表远程资源的响应结果
      */
@@ -95,7 +95,7 @@ public class HttpUtil {
         try {
             URL realUrl = new URL(url);
             // 打开和URL之间的连接
-            connection = (HttpURLConnection)realUrl.openConnection();
+            connection = (HttpURLConnection) realUrl.openConnection();
             // 设置通用的请求属性
             connection.setRequestProperty("accept", "*/*");
             connection.setRequestProperty("connection", "Keep-Alive");
@@ -130,8 +130,9 @@ public class HttpUtil {
 
     /**
      * 发送对象 post
-     * @param url 远程接口地址
-     * @param param 请求对象
+     *
+     * @param url    远程接口地址
+     * @param param  请求对象
      * @param header header
      * @return T 所代表远程资源的响应结果
      */
@@ -142,8 +143,7 @@ public class HttpUtil {
     /**
      * 边界标识
      */
-    private final static String BOUNDARY = UUID.randomUUID().toString()
-                                               .toLowerCase().replaceAll("-", "");
+    private final static String BOUNDARY = UUID.randomUUID().toString().toLowerCase().replaceAll("-", "");
 
     /**
      * 必须存在
@@ -157,11 +157,12 @@ public class HttpUtil {
 
     /**
      * 发送 post 文件请求
-     * @param url 远程接口路径
+     *
+     * @param url      远程接口路径
      * @param paramObj 泛型出参
-     * @param dir 文件本地路径
-     * @param header 请求头
-     * @param <T> 泛型入参
+     * @param dir      文件本地路径
+     * @param header   请求头
+     * @param <T>      泛型入参
      * @return T 所代表远程资源的响应结果
      */
     public static <T> String sendPostFile(String url, T paramObj, String dir, Map<String, String> header) {
@@ -198,21 +199,19 @@ public class HttpUtil {
             throw new IllegalArgumentException("文件不存在");
         }
 
-        try (
-            DataOutputStream out = new DataOutputStream(connection.getOutputStream());
-            DataInputStream in = new DataInputStream(new FileInputStream(file));
-            ) {
-            try{
+        try (DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+             DataInputStream in = new DataInputStream(new FileInputStream(file));) {
+            try {
 
                 // 请求参数部分
                 StringBuilder requestParams = new StringBuilder();
                 requestParams.append(PREFIX).append(BOUNDARY).append(LINE_END);
                 requestParams.append("Content-Disposition: form-data; name=\"")
-                             .append("file").append("\"").append(LINE_END);
-                requestParams.append("Content-Type: text/plain; charset=utf-8")
+                             .append("file")
+                             .append("\"")
                              .append(LINE_END);
-                requestParams.append("Content-Transfer-Encoding: 8bit").append(
-                    LINE_END);
+                requestParams.append("Content-Type: text/plain; charset=utf-8").append(LINE_END);
+                requestParams.append("Content-Transfer-Encoding: 8bit").append(LINE_END);
                 requestParams.append(LINE_END);// 参数头设置完以后需要两个换行，然后才是参数内容
                 requestParams.append("ori2.jpeg");
                 requestParams.append(LINE_END);
@@ -224,22 +223,21 @@ public class HttpUtil {
                 requestParams = new StringBuilder();
                 requestParams.append(PREFIX).append(BOUNDARY).append(LINE_END);
                 requestParams.append("Content-Disposition: form-data; name=\"")
-                             .append("file").append("\"; filename=\"")
-                             .append("ori2.jpeg").append("\"")
+                             .append("file")
+                             .append("\"; filename=\"")
+                             .append("ori2.jpeg")
+                             .append("\"")
                              .append(LINE_END);
-                requestParams.append("Content-Type:")
-                             .append("multipart/form-data")
-                             .append(LINE_END);
-                requestParams.append("Content-Transfer-Encoding: 8bit").append(
-                    LINE_END);
+                requestParams.append("Content-Type:").append("multipart/form-data").append(LINE_END);
+                requestParams.append("Content-Transfer-Encoding: 8bit").append(LINE_END);
                 requestParams.append(LINE_END);// 参数头设置完以后需要两个换行，然后才是参数内容
 
                 out.write(requestParams.toString().getBytes());
 
-                int bytes=0;
+                int bytes = 0;
                 byte[] buffer = new byte[1024];
-                while((bytes=in.read(buffer))!=-1){
-                    out.write(buffer,0,bytes);
+                while ((bytes = in.read(buffer)) != -1) {
+                    out.write(buffer, 0, bytes);
                 }
 
                 out.write(LINE_END.getBytes());
@@ -249,7 +247,7 @@ public class HttpUtil {
                 String endTarget = PREFIX + BOUNDARY + PREFIX + LINE_END;
                 out.write(endTarget.getBytes());
                 out.flush();
-            }catch(Exception e){
+            } catch (Exception e) {
                 throw new Exception(e);
             }
         } catch (Exception e) {
@@ -263,6 +261,7 @@ public class HttpUtil {
 
     /**
      * 设置通用的请求属性
+     *
      * @param url 远程接口
      * @return HttpURLConnection
      * @throws IOException 异常
@@ -270,7 +269,7 @@ public class HttpUtil {
     private static HttpURLConnection getConnection(String url) throws IOException {
         URL realUrl = new URL(url);
         // 打开和URL之间的连接
-        HttpURLConnection conn = (HttpURLConnection)realUrl.openConnection();
+        HttpURLConnection conn = (HttpURLConnection) realUrl.openConnection();
         // 设置通用的请求属性
         conn.setRequestProperty("accept", "*/*");
         conn.setRequestProperty("connection", "Keep-Alive");
@@ -282,9 +281,10 @@ public class HttpUtil {
 
     /**
      * 拼接 get 请求参数
-     * @param url 接口地址
+     *
+     * @param url      接口地址
      * @param paramObj 返回泛型
-     * @param <T> 返回类型
+     * @param <T>      返回类型
      * @return T 返回类型
      */
     private static <T> String appendGetUrlParam(String url, T paramObj) {
@@ -319,9 +319,10 @@ public class HttpUtil {
 
     /**
      * 获取URLConnection
-     * @param url 远程接口
+     *
+     * @param url      远程接口
      * @param paramObj 返回类型
-     * @param <T> 返回类型
+     * @param <T>      返回类型
      * @return T 所代表远程资源的响应结果
      * @throws IOException 异常
      */
@@ -334,6 +335,7 @@ public class HttpUtil {
 
     /**
      * 获取返回值
+     *
      * @param connection connection
      * @return String 所代表远程资源的响应结果
      */
@@ -360,9 +362,7 @@ public class HttpUtil {
 
 
         // 定义 ByteArrayOutputStream 输入流来读取URL的响应
-        try (
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        ) {
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();) {
             byte[] buffer = new byte[2 << 12];
             int length;
             while ((length = retStream.read(buffer)) != -1) {
