@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>tech.ynfy</groupId>
-    <artifactId>http-util-java</artifactId>
+    <artifactId>ynfy-tool-httpconnect</artifactId>
     <name>${project.groupId}:${project.artifactId}</name>
     <version>1.0.3</version>
     <description>A Http Util for Java</description>
-    <url>https://github.com/ynfy-tech/http-util-java</url>
+    <url>https://github.com/ynfy-tech/ynfy-tool-httpconnect</url>
 
     <properties>
         <maven.compiler.source>18</maven.compiler.source>
