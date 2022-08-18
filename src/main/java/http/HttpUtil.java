@@ -2,6 +2,7 @@ package http;
 
 
 import com.alibaba.fastjson.JSON;
+import http.constant.HttpEnum;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -80,9 +81,6 @@ public class HttpUtil {
 
     /**
      * 向指定 URL 发送POST方法的请求
-     * <p>
-     * Content type 'application/json;charset=UTF-8' not supported
-     * // 请考虑接口入参的情况
      *
      * @param url    发送请求的 URL
      * @param param  请求参数，请求参数应该是 name1=value1 name2=value2 的形式。
@@ -90,42 +88,7 @@ public class HttpUtil {
      * @return T 所代表远程资源的响应结果
      */
     public static String sendPost(String url, String param, Map<String, String> header) {
-
-        HttpURLConnection connection = null;
-        try {
-            URL realUrl = new URL(url);
-            // 打开和URL之间的连接
-            connection = (HttpURLConnection) realUrl.openConnection();
-            // 设置通用的请求属性
-            connection.setRequestProperty("accept", "*/*");
-            connection.setRequestProperty("connection", "Keep-Alive");
-            connection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-            connection.setRequestMethod("POST");
-            connection.setConnectTimeout(30000);
-            connection.setReadTimeout(30000);
-            // 发送POST请求必须设置如下两行
-            connection.setDoOutput(true);
-            connection.setDoInput(true);
-            if (header != null) {
-                for (Map.Entry<String, String> entry : header.entrySet()) {
-                    connection.setRequestProperty(entry.getKey(), entry.getValue());
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        if (param != null) {
-            byte[] content = param.toString().getBytes(StandardCharsets.UTF_8);
-            try (OutputStream os = connection.getOutputStream();) {
-                os.write(content);
-            } catch (Exception e) {
-                e.getStackTrace();
-            }
-        }
-
-        return getResponseString(connection);
+        return sendPostOrPutConnection(url, param, header, HttpEnum.POST);
     }
 
     /**
@@ -137,7 +100,7 @@ public class HttpUtil {
      * @return T 所代表远程资源的响应结果
      */
     public static String sendObjPost(String url, Object param, Map<String, String> header) {
-        return sendPost(url, JSON.toJSONString(param), header);
+        return sendPostOrPutConnection(url, JSON.toJSONString(param), header, HttpEnum.POST);
     }
 
     /**
@@ -257,7 +220,85 @@ public class HttpUtil {
         return getResponseString(connection);
     }
 
+    /**
+     * 向指定 URL 发送 PUT 方法的请求
+     *
+     * @param url    发送请求的 URL
+     * @param param  请求参数，请求参数应该是 name1=value1 name2=value2 的形式。
+     * @param header 请求头
+     * @return T 所代表远程资源的响应结果
+     */
+    public static String sendPut(String url, String param, Map<String, String> header) {
+        return sendPostOrPutConnection(url, param, header, HttpEnum.PUT);
+    }
+
+    /**
+     * 发送对象 put
+     *
+     * @param url    发送请求的 URL
+     * @param param  请求参数，请求参数应该是 name1=value1 name2=value2 的形式。
+     * @param header 请求头
+     * @return T 所代表远程资源的响应结果
+     */
+    public static String sendObjPut(String url, String param, Map<String, String> header) {
+        return sendPostOrPutConnection(url, param, header, HttpEnum.PUT);
+    }
+
+
     /******************************** 私有方法 ****************************************/
+
+    /**
+     *
+     * 向指定 URL 发送POST方法的请求
+     * <p>
+     * Content type 'application/json;charset=UTF-8' not supported
+     * // 请考虑接口入参的情况
+     *
+     * @param url    发送请求的 URL
+     * @param param  请求参数，请求参数应该是 name1=value1 name2=value2 的形式。
+     * @param header 请求头
+     * @param httpEnum 链接类型枚举
+     * @return T 所代表远程资源的响应结果
+     * @return
+     */
+    public static String sendPostOrPutConnection(String url, String param, Map<String, String> header, HttpEnum httpEnum) {
+
+        HttpURLConnection connection = null;
+        try {
+            URL realUrl = new URL(url);
+            // 打开和URL之间的连接
+            connection = (HttpURLConnection) realUrl.openConnection();
+            // 设置通用的请求属性
+            connection.setRequestProperty("accept", "*/*");
+            connection.setRequestProperty("connection", "Keep-Alive");
+            connection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+            connection.setRequestMethod(httpEnum.name());
+            connection.setConnectTimeout(30000);
+            connection.setReadTimeout(30000);
+            // 发送POST请求必须设置如下两行
+            connection.setDoOutput(true);
+            connection.setDoInput(true);
+            if (header != null) {
+                for (Map.Entry<String, String> entry : header.entrySet()) {
+                    connection.setRequestProperty(entry.getKey(), entry.getValue());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        if (param != null) {
+            byte[] content = param.toString().getBytes(StandardCharsets.UTF_8);
+            try (OutputStream os = connection.getOutputStream();) {
+                os.write(content);
+            } catch (Exception e) {
+                e.getStackTrace();
+            }
+        }
+
+        return getResponseString(connection);
+    }
 
     /**
      * 设置通用的请求属性
