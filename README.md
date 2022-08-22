@@ -6,7 +6,7 @@ A http util for java.
 ```
 <dependency>
     <groupId>tech.ynfy</groupId>
-    <artifactId>http-util-java</artifactId>
+    <artifactId>ynfy-tool-httpconnect</artifactId>
     <version>1.0.3</version>
 </dependency>
 ```

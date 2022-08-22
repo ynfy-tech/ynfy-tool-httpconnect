@@ -24,8 +24,8 @@
         </license>
     </licenses>
     <scm>
-        <connection>https://github.com/ynfy-tech/http-util-java.git</connection>
-        <url>https://github.com/ynfy-tech/http-util-java</url>
+        <connection>https://github.com/ynfy-tech/ynfy-tool-httpconnect.git</connection>
+        <url>https://github.com/ynfy-tech/ynfy-tool-httpconnect</url>
     </scm>
     <developers>
         <developer>
