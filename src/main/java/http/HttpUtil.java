@@ -83,7 +83,7 @@ public class HttpUtil {
      * 向指定 URL 发送POST方法的请求
      *
      * @param url    发送请求的 URL
-     * @param param  请求参数，请求参数应该是 name1=value1 name2=value2 的形式。
+     * @param param  请求参数，JSON string
      * @param header 请求头
      * @return T 所代表远程资源的响应结果
      */
@@ -92,14 +92,14 @@ public class HttpUtil {
     }
 
     /**
-     * 发送对象 post
+     * 向指定 URL 发送POST方法的请求
      *
-     * @param url    远程接口地址
-     * @param param  请求对象
-     * @param header header
+     * @param url    发送请求的 URL
+     * @param param  请求参数，Object
+     * @param header 请求头
      * @return T 所代表远程资源的响应结果
      */
-    public static String sendObjPost(String url, Object param, Map<String, String> header) {
+    public static String sendPost(String url, Object param, Map<String, String> header) {
         return sendPostOrPutConnection(url, JSON.toJSONString(param), header, HttpEnum.POST);
     }
 
@@ -224,7 +224,7 @@ public class HttpUtil {
      * 向指定 URL 发送 PUT 方法的请求
      *
      * @param url    发送请求的 URL
-     * @param param  请求参数，请求参数应该是 name1=value1 name2=value2 的形式。
+     * @param param  请求参数，JSON string
      * @param header 请求头
      * @return T 所代表远程资源的响应结果
      */
@@ -233,15 +233,15 @@ public class HttpUtil {
     }
 
     /**
-     * 发送对象 put
+     * 向指定 URL 发送 PUT 方法的请求
      *
      * @param url    发送请求的 URL
-     * @param param  请求参数，请求参数应该是 name1=value1 name2=value2 的形式。
+     * @param param  请求参数，Object
      * @param header 请求头
      * @return T 所代表远程资源的响应结果
      */
-    public static String sendObjPut(String url, String param, Map<String, String> header) {
-        return sendPostOrPutConnection(url, param, header, HttpEnum.PUT);
+    public static String sendPut(String url, Object param, Map<String, String> header) {
+        return sendPostOrPutConnection(url, JSON.toJSONString(param), header, HttpEnum.PUT);
     }
 
 
@@ -259,7 +259,6 @@ public class HttpUtil {
      * @param header 请求头
      * @param httpEnum 链接类型枚举
      * @return T 所代表远程资源的响应结果
-     * @return
      */
     public static String sendPostOrPutConnection(String url, String param, Map<String, String> header, HttpEnum httpEnum) {
 

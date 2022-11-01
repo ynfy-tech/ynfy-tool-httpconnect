@@ -76,7 +76,7 @@ public class HttpDemoUtil {
      * 向指定 URL 发送POST方法的请求
      *
      * @param url           发送请求的 URL
-     * @param param         请求参数，请求参数应该是 name1=value1 name2=value2 的形式。
+     * @param param         请求参数，请求参数应该是 name1=value1 name2=value2 的 json 形式。
      * @param header 请求头
      * @param <M> 返回子类型
      * @param responseClass 返回子类型
@@ -90,8 +90,22 @@ public class HttpDemoUtil {
         return getRet(result, responseClass);
     }
 
-    public static <M> M sendObjPost(String url, Object param, Map<String, String> header, Class<M> responseClass) {
-        return sendPost(url, JSON.toJSONString(param), header, responseClass);
+    /**
+     *
+     * 向指定 URL 发送POST方法的请求
+     *
+     * @param url           发送请求的 URL
+     * @param param         请求参数，object
+     * @param header 请求头
+     * @param <M> 返回子类型
+     * @param responseClass 返回子类型
+     * @return 所代表远程资源的响应结果
+     *
+     * Content type 'application/json;charset=UTF-8' not supported
+     * // 请考虑接口入参的情况
+     */
+    public static <M> M sendPost(String url, Object param, Map<String, String> header, Class<M> responseClass) {
+        return sendPost(url, param, header, responseClass);
     }
 
     /**
@@ -140,12 +154,12 @@ public class HttpDemoUtil {
      * @return T 所代表远程资源的响应结果
      */
     private static <T> T getRet(String result, Class<T> responseClass) {
-        DemoVO<T> baseRes = JSONObject.parseObject(result, new TypeReference<>(responseClass) {
+        DemoVO<T> baseRes = JSONObject.parseObject(result, new TypeReference<DemoVO<T>>(responseClass) {
         });
         if (baseRes == null) {
             return null;
         }
-        if ("0000".equals(baseRes.getCode())) {
+        if ("1111".equals(baseRes.getCode())) {
             try {
                 if (responseClass == String.class) {
                     return (T) baseRes.getMessage();
@@ -174,10 +188,10 @@ public class HttpDemoUtil {
      * @return 所代表远程资源的响应结果
      */
     private static <T> List<T> getRetPage(String result, Class<T> responseClass) {
-        TypeReference<DemoVO<DemoPagingVO<T>>> typeReference = new TypeReference<>(responseClass) {
+        TypeReference<DemoVO<DemoPagingVO<T>>> typeReference = new TypeReference<DemoVO<DemoPagingVO<T>>>(responseClass) {
         };
         DemoVO<DemoPagingVO<T>> baseRes = JSONObject.parseObject(result, typeReference);
-        if ("0000".equals(baseRes.getCode())) {
+        if ("1111".equals(baseRes.getCode())) {
             try {
                 if (responseClass == String.class) {
                     throw new Exception(baseRes.getMessage());

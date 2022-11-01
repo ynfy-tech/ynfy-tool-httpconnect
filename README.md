@@ -1,6 +1,10 @@
 # ynfy-tool-httpconnect
 
-A http util for java. 
+A http client for java, based on `HttpURLConnection`. Support get/post/put/delete & file request. 
+
+Simple, effective, and highly expandable ~
+
+
 
 # Maven Dependency
 ```
@@ -10,6 +14,5 @@ A http util for java.
     <version>1.0.3</version>
 </dependency>
 ```
-
 
 
