@@ -7,6 +7,15 @@ assignees: ''
 
 ---
 
+<!-- Here is for bug reports and feature requests ONLY! 
+
+If you're looking for help, please check our mail list、WeChat group and the Gitter room.
+
+Please try to use English to describe your issue, or at least provide a snippet of English translation.
+我们鼓励使用英文，如果不能直接使用，可以使用翻译软件，您仍旧可以保留中文原文。
+-->
+
+
 **Describe the bug**
 A clear and concise description of what the bug is.
 
