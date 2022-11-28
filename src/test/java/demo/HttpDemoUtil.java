@@ -30,7 +30,7 @@ public class HttpDemoUtil {
      * @return String 所代表远程资源的响应结果
      */
     public static <T, M> M sendGet(String url, T paramObj, Map<String, String> header, Class<M> responseClass) {
-        String result = HttpUtil.sendGet(url, paramObj, header);
+        String result = HttpUtil.getInstance().sendGet(url, paramObj, header);
         return getRet(result, responseClass);
     }
 
@@ -46,7 +46,7 @@ public class HttpDemoUtil {
      * @return String 所代表远程资源的响应结果
      */
     public static <T, M> M sendDelete(String url, T paramObj, Map<String, String> header, Class<M> responseClass) {
-        String result = HttpUtil.sendDelete(url, paramObj, header);
+        String result = HttpUtil.getInstance().sendDelete(url, paramObj, header);
         return getRet(result, responseClass);
     }
 
@@ -66,7 +66,7 @@ public class HttpDemoUtil {
                                              T paramObj,
                                              Map<String, String> header,
                                              Class<M> responseClass) {
-        String result = HttpUtil.sendGet(url, paramObj, header);
+        String result = HttpUtil.getInstance().sendGet(url, paramObj, header);
         return getRetPage(result, responseClass);
     }
 
@@ -86,7 +86,7 @@ public class HttpDemoUtil {
      * // 请考虑接口入参的情况
      */
     public static <M> M sendPost(String url, String param, Map<String, String> header, Class<M> responseClass) {
-        String result = HttpUtil.sendPost(url, param, header);
+        String result = HttpUtil.getInstance().sendPost(url, param, header);
         return getRet(result, responseClass);
     }
 
@@ -125,7 +125,7 @@ public class HttpDemoUtil {
                                         String dir,
                                         Map<String, String> header,
                                         Class<M> responseClass) {
-        String result = HttpUtil.sendPostFile(url, paramObj, dir, header);
+        String result = HttpUtil.getInstance().sendPostFile(url, paramObj, dir, header);
         return getRet(result, responseClass);
     }
 
