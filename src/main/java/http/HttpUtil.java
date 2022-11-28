@@ -23,6 +23,20 @@ import java.util.UUID;
  */
 public class HttpUtil {
 
+    private static class Inner {
+        private static final HttpUtil instance = new HttpUtil();
+    }
+
+    /***
+     * 单例模式之：静态内部类单例模式
+     * 只有第一次调用getInstance方法时，虚拟机才加载 Inner 并初始化instance ，只有一个线程可以获得对象的初始化锁，其他线程无法进行初始化，
+     * 保证对象的唯一性。目前此方式是所有单例模式中最推荐的模式，但具体还是根据项目选择。
+     * @return
+     */
+    public static HttpUtil getInstance() {
+        return Inner.instance;
+    }
+
     /**
      * 向指定URL发送GET方法的请求
      * <p>
@@ -34,7 +48,7 @@ public class HttpUtil {
      * @param <T>      泛型入参
      * @return String 所代表远程资源的响应结果
      */
-    public static <T> String sendGet(String url, T paramObj, Map<String, String> header) {
+    public <T> String sendGet(String url, T paramObj, Map<String, String> header) {
         HttpURLConnection connection = null;
         try {
             connection = initGetConnection(url, paramObj);
@@ -60,7 +74,7 @@ public class HttpUtil {
      * @param <T>      泛型入参
      * @return String 所代表远程资源的响应结果
      */
-    public static <T> String sendDelete(String url, T paramObj, Map<String, String> header) {
+    public <T> String sendDelete(String url, T paramObj, Map<String, String> header) {
         HttpURLConnection connection = null;
         try {
             connection = initGetConnection(url, paramObj);
@@ -87,7 +101,7 @@ public class HttpUtil {
      * @param header 请求头
      * @return T 所代表远程资源的响应结果
      */
-    public static String sendPost(String url, String param, Map<String, String> header) {
+    public String sendPost(String url, String param, Map<String, String> header) {
         return sendPostOrPutConnection(url, param, header, HttpEnum.POST);
     }
 
@@ -99,24 +113,24 @@ public class HttpUtil {
      * @param header 请求头
      * @return T 所代表远程资源的响应结果
      */
-    public static String sendPost(String url, Object param, Map<String, String> header) {
+    public String sendPost(String url, Object param, Map<String, String> header) {
         return sendPostOrPutConnection(url, JSON.toJSONString(param), header, HttpEnum.POST);
     }
 
     /**
      * 边界标识
      */
-    private final static String BOUNDARY = UUID.randomUUID().toString().toLowerCase().replaceAll("-", "");
+    private final String BOUNDARY = UUID.randomUUID().toString().toLowerCase().replaceAll("-", "");
 
     /**
      * 必须存在
      */
-    private final static String PREFIX = "--";
+    private final String PREFIX = "--";
 
     /**
      * 字段结束
      */
-    private final static String LINE_END = "\r\n";
+    private final String LINE_END = "\r\n";
 
     /**
      * 发送 post 文件请求
@@ -128,7 +142,7 @@ public class HttpUtil {
      * @param <T>      泛型入参
      * @return T 所代表远程资源的响应结果
      */
-    public static <T> String sendPostFile(String url, T paramObj, String dir, Map<String, String> header) {
+    public <T> String sendPostFile(String url, T paramObj, String dir, Map<String, String> header) {
         String urlParams = appendGetUrlParam(url, paramObj);
         HttpURLConnection connection = null;
         try {
@@ -228,7 +242,7 @@ public class HttpUtil {
      * @param header 请求头
      * @return T 所代表远程资源的响应结果
      */
-    public static String sendPut(String url, String param, Map<String, String> header) {
+    public String sendPut(String url, String param, Map<String, String> header) {
         return sendPostOrPutConnection(url, param, header, HttpEnum.PUT);
     }
 
@@ -240,7 +254,7 @@ public class HttpUtil {
      * @param header 请求头
      * @return T 所代表远程资源的响应结果
      */
-    public static String sendPut(String url, Object param, Map<String, String> header) {
+    public String sendPut(String url, Object param, Map<String, String> header) {
         return sendPostOrPutConnection(url, JSON.toJSONString(param), header, HttpEnum.PUT);
     }
 
@@ -260,7 +274,7 @@ public class HttpUtil {
      * @param httpEnum 链接类型枚举
      * @return T 所代表远程资源的响应结果
      */
-    public static String sendPostOrPutConnection(String url, String param, Map<String, String> header, HttpEnum httpEnum) {
+    public String sendPostOrPutConnection(String url, String param, Map<String, String> header, HttpEnum httpEnum) {
 
         HttpURLConnection connection = null;
         try {
@@ -306,7 +320,7 @@ public class HttpUtil {
      * @return HttpURLConnection
      * @throws IOException 异常
      */
-    private static HttpURLConnection getConnection(String url) throws IOException {
+    private HttpURLConnection getConnection(String url) throws IOException {
         URL realUrl = new URL(url);
         // 打开和URL之间的连接
         HttpURLConnection conn = (HttpURLConnection) realUrl.openConnection();
@@ -327,7 +341,7 @@ public class HttpUtil {
      * @param <T>      返回类型
      * @return T 返回类型
      */
-    private static <T> String appendGetUrlParam(String url, T paramObj) {
+    private <T> String appendGetUrlParam(String url, T paramObj) {
         StringBuilder urlNameString = new StringBuilder(url);
         if (paramObj != null) {
             if (String.class.equals(paramObj.getClass())) {
@@ -366,7 +380,7 @@ public class HttpUtil {
      * @return T 所代表远程资源的响应结果
      * @throws IOException 异常
      */
-    private static <T> HttpURLConnection initGetConnection(String url, T paramObj) throws IOException {
+    private <T> HttpURLConnection initGetConnection(String url, T paramObj) throws IOException {
         String urlParams = appendGetUrlParam(url, paramObj);
         HttpURLConnection connection = getConnection(urlParams);
 
@@ -379,7 +393,7 @@ public class HttpUtil {
      * @param connection connection
      * @return String 所代表远程资源的响应结果
      */
-    private static String getResponseString(HttpURLConnection connection) {
+    private String getResponseString(HttpURLConnection connection) {
         String result = null;
 
         Long time1 = System.currentTimeMillis();
