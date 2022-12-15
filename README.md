@@ -16,6 +16,8 @@ Simple, effective, and highly expandable ~
 ```
 
 # Change Notes
++ [v1.1.1](https://github.com/ynfy-tech/ynfy-tool-httpconnect/releases/tag/v1.1.1)
+    + resolved [#26](https://github.com/ynfy-tech/ynfy-tool-httpconnect/issues/26)
 + [v1.1.0 Milestone](https://github.com/ynfy-tech/ynfy-tool-httpconnect/releases/tag/v1.1.0)
     + Split HttpUtil to HttpGetUtil, HttpPostUtil, HttpPutUtil, HttpDeleteUtil
     + resolved [#14](https://github.com/ynfy-tech/ynfy-tool-httpconnect/issues/14), [#15](https://github.com/ynfy-tech/ynfy-tool-httpconnect/issues/15), [#16](https://github.com/ynfy-tech/ynfy-tool-httpconnect/issues/16), [#17](https://github.com/ynfy-tech/ynfy-tool-httpconnect/issues/17), [#18](https://github.com/ynfy-tech/ynfy-tool-httpconnect/issues/18), [#19](https://github.com/ynfy-tech/ynfy-tool-httpconnect/issues/19), [#20](https://github.com/ynfy-tech/ynfy-tool-httpconnect/issues/20)

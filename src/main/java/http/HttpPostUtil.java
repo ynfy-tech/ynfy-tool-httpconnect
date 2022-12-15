@@ -4,10 +4,7 @@ package http;
 import com.alibaba.fastjson.JSON;
 import http.constant.HttpEnum;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
@@ -44,7 +41,7 @@ public class HttpPostUtil extends InitUtil {
     /**
      * 向指定 URL 发送POST方法的请求
      *
-     * @param url    发送请求的 URL
+     * @param url 发送请求的 URL
      * @return T 所代表远程资源的响应结果
      */
     public String send(String url) {
@@ -203,7 +200,42 @@ public class HttpPostUtil extends InitUtil {
 
         return getResponseString(connection);
     }
-    
+
+    /**
+     * 获取 sessionId
+     * header.put("Cookie", sessionId);
+     * 
+     * https://blog.csdn.net/thomassamul/article/details/82346632
+     * https://juejin.cn/post/7057714775736156168
+     *
+     * @param url   url
+     * @param param 参数
+     * @return sessionId
+     */
+    public String getSessionId(String url, Object param) {
+        HttpURLConnection connection = getConnection(url, HttpEnum.POST);
+
+        if (param != null) {
+            byte[] content = param.toString().getBytes(StandardCharsets.UTF_8);
+            try (OutputStream os = connection.getOutputStream();) {
+                os.write(content);
+            } catch (Exception e) {
+                e.getStackTrace();
+            }
+        }
+
+        System.out.println("the ret is: ");
+        System.out.println(getResponseString(connection));
+
+        String session_value = connection.getHeaderField("Set-Cookie");
+        if (session_value == null || session_value.length() == 0) {
+            throw new IllegalArgumentException("session Id is null!");
+        }
+
+        String[] sessionId = session_value.split(";");
+        return sessionId[0];
+    }
+
 
     /**
      * Default constructor added by Java.
