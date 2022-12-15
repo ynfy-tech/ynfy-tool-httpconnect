@@ -169,7 +169,7 @@ public class HttpDemoUtil {
                 }
                 return t;
             } catch (Exception e) {
-                e.printStackTrace();
+                throw new IllegalArgumentException(e.getMessage(), e);
             }
         } else {
             throw new IllegalArgumentException(baseRes.getMessage());
@@ -201,7 +201,7 @@ public class HttpDemoUtil {
                 }
                 return list;
             } catch (Exception e) {
-                e.printStackTrace();
+                throw new IllegalArgumentException(e.getMessage(), e);
             }
         } else {
             throw new IllegalArgumentException(baseRes.getMessage());

@@ -44,7 +44,7 @@ public class HttpGetUtil extends InitUtil {
             // 建立实际的连接
             connection.connect();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException(e.getMessage(), e);
         }
         return getResponseString(connection);
     }
@@ -71,7 +71,7 @@ public class HttpGetUtil extends InitUtil {
             // 建立实际的连接
             connection.connect();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException(e.getMessage(), e);
         }
         return getResponseString(connection);
     }
@@ -100,7 +100,7 @@ public class HttpGetUtil extends InitUtil {
             // 建立实际的连接
             connection.connect();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException(e.getMessage(), e);
         }
         return getResponseString(connection);
     }
