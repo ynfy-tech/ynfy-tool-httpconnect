@@ -1,8 +1,13 @@
 package http;
 
 
+import com.alibaba.fastjson.JSON;
+import http.constant.HttpEnum;
+
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
@@ -38,12 +43,11 @@ public class HttpDeleteUtil extends InitUtil {
     public <T> String send(String url) {
         HttpURLConnection connection = null;
         try {
-            connection = getConnection(url);
-            connection.setRequestMethod("DELETE");
+            connection = getConnection(url, HttpEnum.DELETE);
             // 建立实际的连接
             connection.connect();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException(e.getMessage(), e);
         }
         return getResponseString(connection);
     }
@@ -59,8 +63,7 @@ public class HttpDeleteUtil extends InitUtil {
     public <T> String send(String url, Map<String, String> header) {
         HttpURLConnection connection = null;
         try {
-            connection = getConnection(url);
-            connection.setRequestMethod("DELETE");
+            connection = getConnection(url, HttpEnum.DELETE);
             if (header != null) {
                 for (Map.Entry<String, String> entry : header.entrySet()) {
                     connection.setRequestProperty(entry.getKey(), entry.getValue());
@@ -69,7 +72,7 @@ public class HttpDeleteUtil extends InitUtil {
             // 建立实际的连接
             connection.connect();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException(e.getMessage(), e);
         }
         return getResponseString(connection);
     }
@@ -97,12 +100,57 @@ public class HttpDeleteUtil extends InitUtil {
             // 建立实际的连接
             connection.connect();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException(e.getMessage(), e);
         }
         return getResponseString(connection);
     }
-    
-    
+
+    /**
+     * 向指定URL发送 delete 方法的请求
+     *
+     * @param url      发送请求的URL
+     * @param jsonBodyObj 请求体, jsonBody 的形式
+     * @param header   请求头, "key1":"value1"的形式
+     * @param <T>      泛型入参
+     * @return String 所代表远程资源的响应结果
+     */
+    public <T> String sendJson(String url, Map<String, String> header, String jsonBodyObj) {
+        HttpURLConnection connection = null;
+        try {
+            connection = getConnection(url, HttpEnum.DELETE);
+            if (header != null) {
+                for (Map.Entry<String, String> entry : header.entrySet()) {
+                    connection.setRequestProperty(entry.getKey(), entry.getValue());
+                }
+            }
+            if (jsonBodyObj != null) {
+                byte[] content = jsonBodyObj.toString().getBytes(StandardCharsets.UTF_8);
+                try (OutputStream os = connection.getOutputStream();) {
+                    os.write(content);
+                } catch (Exception e) {
+                    e.getStackTrace();
+                }
+            }
+            // 建立实际的连接
+            connection.connect();
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e.getMessage(), e);
+        }
+        return getResponseString(connection);
+    }
+
+    /**
+     * 向指定URL发送 delete 方法的请求
+     *
+     * @param url      发送请求的URL
+     * @param jsonBodyObj 请求体, jsonBody 的形式
+     * @param header   请求头, "key1":"value1"的形式
+     * @param <T>      泛型入参
+     * @return String 所代表远程资源的响应结果
+     */
+    public <T> String sendJson(String url, Map<String, String> header, Object jsonBodyObj) {
+        return sendJson(url, header, JSON.toJSONString(jsonBodyObj));
+    }
 
     /**
      * Default constructor added by Java.

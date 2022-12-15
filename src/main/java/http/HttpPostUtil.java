@@ -135,7 +135,7 @@ public class HttpPostUtil extends InitUtil {
 
             connection.connect();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException(e.getMessage(), e);
         }
 
         File file = new File(dir);
@@ -195,7 +195,7 @@ public class HttpPostUtil extends InitUtil {
                 throw new Exception(e);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException(e.getMessage(), e);
         }
 
         return getResponseString(connection);

@@ -1,7 +1,7 @@
 package http;
 
 
-import com.alibaba.fastjson.JSON;
+import http.constant.Constant;
 import http.constant.HttpEnum;
 
 import java.io.*;
@@ -9,7 +9,6 @@ import java.lang.reflect.Field;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * http 工具类
@@ -35,7 +34,7 @@ public class InitUtil {
      */
     protected String sendPostOrPutConnection(String url, HttpEnum httpEnum) {
 
-        HttpURLConnection connection = getPutOrPostConnection(url, httpEnum);
+        HttpURLConnection connection = getConnection(url, httpEnum);
 
         return getResponseString(connection);
     }
@@ -55,7 +54,7 @@ public class InitUtil {
      */
     protected String sendPostOrPutConnection(String url, HttpEnum httpEnum, Map<String, String> header) {
 
-        HttpURLConnection connection = getPutOrPostConnection(url, httpEnum);
+        HttpURLConnection connection = getConnection(url, httpEnum);
         if (header != null) {
             for (Map.Entry<String, String> entry : header.entrySet()) {
                 connection.setRequestProperty(entry.getKey(), entry.getValue());
@@ -80,7 +79,7 @@ public class InitUtil {
      */
     protected String sendPostOrPutConnection(String url, HttpEnum httpEnum, Map<String, String> header, String param) {
 
-        HttpURLConnection connection = getPutOrPostConnection(url, httpEnum);
+        HttpURLConnection connection = getConnection(url, httpEnum);
 
         if (header != null) {
             for (Map.Entry<String, String> entry : header.entrySet()) {
@@ -117,8 +116,8 @@ public class InitUtil {
             conn.setRequestProperty("accept", "*/*");
             conn.setRequestProperty("connection", "Keep-Alive");
             conn.setRequestProperty("Content-Type", "application/json; utf-8");
-            conn.setConnectTimeout(1000);
-            conn.setReadTimeout(30000);
+            conn.setConnectTimeout(Constant.CONNECT_TIME_OUT);
+            conn.setReadTimeout(Constant.READ_TIME_OUT);
         } catch (IOException e) {
             throw new IllegalArgumentException(e);
         }
@@ -135,12 +134,12 @@ public class InitUtil {
      * @throws IOException 异常
      * @return
      */
-    protected HttpURLConnection getPutOrPostConnection(String url, HttpEnum httpEnum) {
+    protected HttpURLConnection getConnection(String url, HttpEnum httpEnum) {
         HttpURLConnection connection = getConnection(url);
         try {
             connection.setRequestMethod(httpEnum.name());
-            connection.setConnectTimeout(30000);
-            connection.setReadTimeout(30000);
+            connection.setConnectTimeout(Constant.CONNECT_TIME_OUT);
+            connection.setReadTimeout(Constant.READ_TIME_OUT);
             // 发送POST请求必须设置如下两行
             connection.setDoOutput(true);
             connection.setDoInput(true);
@@ -210,7 +209,7 @@ public class InitUtil {
                 retStream = connection.getErrorStream();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException(e.getMessage(), e);
         }
 
         Long time2 = System.currentTimeMillis();
@@ -226,7 +225,7 @@ public class InitUtil {
             }
             result = outputStream.toString(StandardCharsets.UTF_8.name());
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException(e.getMessage(), e);
         }
         return result;
     }
