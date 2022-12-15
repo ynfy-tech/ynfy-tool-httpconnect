@@ -27,8 +27,6 @@ public class InitUtil {
      * // 请考虑接口入参的情况
      *
      * @param url    发送请求的 URL
-     * @param param  请求参数，请求参数应该是 name1=value1 name2=value2 的形式。
-     * @param header 请求头
      * @param httpEnum 链接类型枚举
      * @return T 所代表远程资源的响应结果
      */
@@ -47,7 +45,6 @@ public class InitUtil {
      * // 请考虑接口入参的情况
      *
      * @param url    发送请求的 URL
-     * @param param  请求参数，请求参数应该是 name1=value1 name2=value2 的形式。
      * @param header 请求头
      * @param httpEnum 链接类型枚举
      * @return T 所代表远程资源的响应结果
@@ -104,7 +101,6 @@ public class InitUtil {
      *
      * @param url 远程接口
      * @return HttpURLConnection
-     * @throws IOException 异常
      */
     protected HttpURLConnection getConnection(String url) {
         // 打开和URL之间的连接
@@ -131,8 +127,7 @@ public class InitUtil {
      * @param url 远程接口
      * @param httpEnum 调用类型 
      * @return HttpURLConnection
-     * @throws IOException 异常
-     * @return
+     * @return HttpURLConnection
      */
     protected HttpURLConnection getConnection(String url, HttpEnum httpEnum) {
         HttpURLConnection connection = getConnection(url);
