@@ -174,7 +174,6 @@ public class HttpDemoUtil {
         } else {
             throw new IllegalArgumentException(baseRes.getMessage());
         }
-        return null;
     }
 
     /**
@@ -206,7 +205,6 @@ public class HttpDemoUtil {
         } else {
             throw new IllegalArgumentException(baseRes.getMessage());
         }
-        return null;
     }
 
     /**
