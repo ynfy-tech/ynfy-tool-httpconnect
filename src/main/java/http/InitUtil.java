@@ -3,6 +3,7 @@ package http;
 
 import http.constant.Constant;
 import http.constant.HttpEnum;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -192,7 +193,6 @@ public class InitUtil {
     protected String getResponseString(HttpURLConnection connection) {
         String result = null;
 
-        Long time1 = System.currentTimeMillis();
 
         // 处理不同的retcode
         InputStream retStream = null;
@@ -206,11 +206,7 @@ public class InitUtil {
         } catch (IOException e) {
             throw new IllegalArgumentException(e.getMessage(), e);
         }
-
-        Long time2 = System.currentTimeMillis();
-        System.out.println("getInput ms " + (time2 - time1));
-
-
+        
         // 定义 ByteArrayOutputStream 输入流来读取URL的响应
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();) {
             byte[] buffer = new byte[2 << 12];

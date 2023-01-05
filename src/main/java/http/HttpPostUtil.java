@@ -223,13 +223,11 @@ public class HttpPostUtil extends InitUtil {
                 e.getStackTrace();
             }
         }
-
-        System.out.println("the ret is: ");
-        System.out.println(getResponseString(connection));
-
+        
         String session_value = connection.getHeaderField("Set-Cookie");
         if (session_value == null || session_value.length() == 0) {
-            throw new IllegalArgumentException("session Id is null!");
+            String msg = getResponseString(connection);
+            throw new IllegalArgumentException("session Id is null! the ret is: " + msg);
         }
 
         String[] sessionId = session_value.split(";");
