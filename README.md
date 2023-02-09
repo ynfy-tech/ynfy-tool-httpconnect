@@ -11,11 +11,14 @@ Simple, effective, and highly expandable ~
 <dependency>
     <groupId>tech.ynfy</groupId>
     <artifactId>ynfy-tool-httpconnect</artifactId>
-    <version>1.1.2</version>
+    <version>1.1.3</version>
 </dependency>
 ```
 
 # Change Notes
++ [v1.1.3](https://github.com/ynfy-tech/ynfy-tool-httpconnect/releases/tag/v1.1.3)
+    + resolved [#33](https://github.com/ynfy-tech/ynfy-tool-httpconnect/issues/33)
+    + Optimize code
 + [v1.1.2](https://github.com/ynfy-tech/ynfy-tool-httpconnect/releases/tag/v1.1.2)
     + resolved [#28](https://github.com/ynfy-tech/ynfy-tool-httpconnect/issues/28)
     + resolved [#29](https://github.com/ynfy-tech/ynfy-tool-httpconnect/issues/29)

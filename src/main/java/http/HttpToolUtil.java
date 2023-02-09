@@ -17,6 +17,34 @@ import java.util.Map;
 public class HttpToolUtil {
 
     /**
+     * 内部静态类
+     */
+    private static class Inner {
+        private static final HttpToolUtil instance = new HttpToolUtil();
+    }
+
+    /***
+     * 单例模式之：静态内部类单例模式
+     * 只有第一次调用getInstance方法时，虚拟机才加载 Inner 并初始化instance ，只有一个线程可以获得对象的初始化锁，其他线程无法进行初始化，
+     * 保证对象的唯一性。目前此方式是所有单例模式中最推荐的模式，但具体还是根据项目选择。
+     * @return 返回单例
+     */
+    public static HttpToolUtil getInstance() {
+        return HttpToolUtil.Inner.instance;
+    }
+
+
+    /**
+     * 静态内部类，延迟加载，懒汉式，线程安全的单例模式
+     */
+    private static final class Static {
+        private static HttpGetUtil getUtil = HttpGetUtil.getInstance();
+        private static HttpPostUtil postUtil = HttpPostUtil.getInstance();
+        private static HttpPutUtil putUtil = HttpPutUtil.getInstance();
+        private static HttpDeleteUtil deleteUtil = HttpDeleteUtil.getInstance();
+    }
+
+    /**
      * 向指定URL发送GET方法的请求
      *
      * @param url           发送请求的URL
@@ -27,8 +55,8 @@ public class HttpToolUtil {
      * @param <M>           返回子类型
      * @return String 所代表远程资源的响应结果
      */
-    public static <T, M> M sendGet(String url, T paramObj, Map<String, String> header, Class<M> responseClass) {
-        String result = HttpGetUtil.getInstance().send(url, header, paramObj);
+    public <T, M> M sendGet(String url, Map<String, String> header, T paramObj, Class<M> responseClass) {
+        String result = Static.getUtil.send(url, header, paramObj);
         return JSONObject.parseObject(result, responseClass);
     }
 
@@ -43,8 +71,8 @@ public class HttpToolUtil {
      * @param <M>           返回子类型
      * @return String 所代表远程资源的响应结果
      */
-    public static <T, M> M sendDelete(String url, T paramObj, Map<String, String> header, Class<M> responseClass) {
-        String result = HttpDeleteUtil.getInstance().send(url, header, paramObj);
+    public <T, M> M sendDelete(String url, Map<String, String> header, T paramObj, Class<M> responseClass) {
+        String result = Static.deleteUtil.send(url, header, paramObj);
         return JSONObject.parseObject(result, responseClass);
     }
 
@@ -62,8 +90,8 @@ public class HttpToolUtil {
      * Content type 'application/json;charset=UTF-8' not supported
      * // 请考虑接口入参的情况
      */
-    public static <M> M sendPost(String url, String param, Map<String, String> header, Class<M> responseClass) {
-        String result = HttpPostUtil.getInstance().send(url, header, param);
+    public <M> M sendPost(String url, Map<String, String> header, String param, Class<M> responseClass) {
+        String result = Static.postUtil.send(url, header, param);
         return JSONObject.parseObject(result, responseClass);
     }
 
@@ -80,8 +108,9 @@ public class HttpToolUtil {
      * Content type 'application/json;charset=UTF-8' not supported
      * // 请考虑接口入参的情况
      */
-    public static <M> M send(String url, Object param, Map<String, String> header, Class<M> responseClass) {
-        return sendPost(url, JSON.toJSONString(param), header, responseClass);
+    public <M> M sendPost(String url, Map<String, String> header, Object param, Class<M> responseClass) {
+        String result = Static.postUtil.send(url, header, param);
+        return JSONObject.parseObject(result, responseClass);
     }
 
     /**
@@ -96,12 +125,8 @@ public class HttpToolUtil {
      * @param <M>           子类型
      * @return T 所代表远程资源的响应结果
      */
-    public static <T, M> M sendPostFile(String url,
-                                        Map<String, String> header,
-                                        T paramObj,
-                                        String dir,
-                                        Class<M> responseClass) {
-        String result = HttpPostUtil.getInstance().sendFile(url, header, paramObj, dir);
+    public <T, M> M sendPost(String url, Map<String, String> header, T paramObj, String dir, Class<M> responseClass) {
+        String result = Static.postUtil.sendFile(url, header, paramObj, dir);
         return JSONObject.parseObject(result, responseClass);
     }
 
