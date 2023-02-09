@@ -31,7 +31,7 @@ public class HttpDemoUtil {
      * @param <M>           返回子类型
      * @return String 所代表远程资源的响应结果
      */
-    public static <T, M> M sendGet(String url, T paramObj, Map<String, String> header, Class<M> responseClass) {
+    public static <T, M> M sendGet(String url, Map<String, String> header, T paramObj, Class<M> responseClass) {
         String result = HttpGetUtil.getInstance().send(url, header, paramObj);
         return getRet(result, responseClass);
     }
@@ -47,7 +47,7 @@ public class HttpDemoUtil {
      * @param <M>           返回子类型
      * @return String 所代表远程资源的响应结果
      */
-    public static <T, M> M sendDelete(String url, T paramObj, Map<String, String> header, Class<M> responseClass) {
+    public static <T, M> M sendDelete(String url, Map<String, String> header, T paramObj, Class<M> responseClass) {
         String result = HttpDeleteUtil.getInstance().send(url, header, paramObj);
         return getRet(result, responseClass);
     }
@@ -85,7 +85,7 @@ public class HttpDemoUtil {
      * Content type 'application/json;charset=UTF-8' not supported
      * // 请考虑接口入参的情况
      */
-    public static <M> M sendPost(String url, String param, Map<String, String> header, Class<M> responseClass) {
+    public static <M> M sendPost(String url, Map<String, String> header, String param, Class<M> responseClass) {
         String result = HttpPostUtil.getInstance().send(url, header, param);
         return getRet(result, responseClass);
     }
@@ -103,8 +103,9 @@ public class HttpDemoUtil {
      * Content type 'application/json;charset=UTF-8' not supported
      * // 请考虑接口入参的情况
      */
-    public static <M> M send(String url, Object param, Map<String, String> header, Class<M> responseClass) {
-        return sendPost(url, JSON.toJSONString(param), header, responseClass);
+    public static <M> M send(String url, Map<String, String> header, Object param, Class<M> responseClass) {
+        String result = HttpPostUtil.getInstance().send(url, header, param);
+        return getRet(result, responseClass);
     }
 
     /**
