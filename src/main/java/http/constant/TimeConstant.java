@@ -7,7 +7,7 @@ package http.constant;
  * @version 1.0.0
  * @since 2022/12/15
  */
-public interface Constant {
+public interface TimeConstant {
 
     /**
      * 连接超时

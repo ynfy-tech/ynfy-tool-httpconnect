@@ -4,18 +4,25 @@ A http client for java, based on `HttpURLConnection`. Support get/post/put/delet
 
 Simple, effective, and highly expandable ~
 
+# Deploy
+## Snapshot
+mvn clean deploy
 
+## Release
+mvn clean deploy -P release
 
 # Maven Dependency
 ```
 <dependency>
     <groupId>tech.ynfy</groupId>
     <artifactId>ynfy-tool-httpconnect</artifactId>
-    <version>1.1.3</version>
+    <version>1.1.4</version>
 </dependency>
 ```
 
 # Change Notes
++ [v1.1.4](https://github.com/ynfy-tech/ynfy-tool-httpconnect/releases/tag/v1.1.4)
+    + resolved [#35](https://github.com/ynfy-tech/ynfy-tool-httpconnect/issues/35)
 + [v1.1.3](https://github.com/ynfy-tech/ynfy-tool-httpconnect/releases/tag/v1.1.3)
     + resolved [#33](https://github.com/ynfy-tech/ynfy-tool-httpconnect/issues/33)
     + Optimize code

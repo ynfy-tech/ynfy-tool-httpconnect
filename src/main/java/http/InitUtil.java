@@ -1,9 +1,9 @@
 package http;
 
 
-import http.constant.Constant;
+import http.constant.ProtocolConstant;
+import http.constant.TimeConstant;
 import http.constant.HttpEnum;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -104,6 +104,10 @@ public class InitUtil {
      * @return HttpURLConnection
      */
     protected HttpURLConnection getConnection(String url) {
+        if (!url.contains(ProtocolConstant.PROTOCOL_HTTP)) {
+            // 如果 url 不包含 http 协议头, 则自动拼接 http; 兼容 https; 尽可能实现开箱可用
+            url = ProtocolConstant.PROTOCOL_HTTP_PREFIX + url;
+        }
         // 打开和URL之间的连接
         HttpURLConnection conn = null;
         try {
@@ -113,8 +117,8 @@ public class InitUtil {
             conn.setRequestProperty("accept", "*/*");
             conn.setRequestProperty("connection", "Keep-Alive");
             conn.setRequestProperty("Content-Type", "application/json; utf-8");
-            conn.setConnectTimeout(Constant.CONNECT_TIME_OUT);
-            conn.setReadTimeout(Constant.READ_TIME_OUT);
+            conn.setConnectTimeout(TimeConstant.CONNECT_TIME_OUT);
+            conn.setReadTimeout(TimeConstant.READ_TIME_OUT);
         } catch (IOException e) {
             throw new IllegalArgumentException(e);
         }
@@ -134,8 +138,8 @@ public class InitUtil {
         HttpURLConnection connection = getConnection(url);
         try {
             connection.setRequestMethod(httpEnum.name());
-            connection.setConnectTimeout(Constant.CONNECT_TIME_OUT);
-            connection.setReadTimeout(Constant.READ_TIME_OUT);
+            connection.setConnectTimeout(TimeConstant.CONNECT_TIME_OUT);
+            connection.setReadTimeout(TimeConstant.READ_TIME_OUT);
             // 发送POST请求必须设置如下两行
             connection.setDoOutput(true);
             connection.setDoInput(true);
