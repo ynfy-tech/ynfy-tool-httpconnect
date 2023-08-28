@@ -79,14 +79,17 @@ public class InitUtil {
 
         HttpURLConnection connection = getConnection(url, httpEnum);
 
+        // support the default JSON content type in the HttpPostUtil
+        connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+        
         if (header != null) {
             for (Map.Entry<String, String> entry : header.entrySet()) {
                 connection.setRequestProperty(entry.getKey(), entry.getValue());
             }
         }
-
+        
         if (param != null) {
-            byte[] content = param.toString().getBytes(StandardCharsets.UTF_8);
+            byte[] content = param.getBytes(StandardCharsets.UTF_8);
             try (OutputStream os = connection.getOutputStream();) {
                 os.write(content);
             } catch (Exception e) {
