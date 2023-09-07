@@ -16,11 +16,13 @@ mvn clean deploy -P release
 <dependency>
     <groupId>tech.ynfy</groupId>
     <artifactId>ynfy-tool-httpconnect</artifactId>
-    <version>1.1.6</version>
+    <version>1.1.7</version>
 </dependency>
 ```
 
 # Change Notes
++ [v1.1.7](https://github.com/ynfy-tech/ynfy-tool-httpconnect/releases/tag/v1.1.7)
+  + resolved [#41](https://github.com/ynfy-tech/ynfy-tool-httpconnect/issues/41)
 + [v1.1.6](https://github.com/ynfy-tech/ynfy-tool-httpconnect/releases/tag/v1.1.6)
   + resolved [#40](https://github.com/ynfy-tech/ynfy-tool-httpconnect/issues/40)
 + [v1.1.5](https://github.com/ynfy-tech/ynfy-tool-httpconnect/releases/tag/v1.1.5)

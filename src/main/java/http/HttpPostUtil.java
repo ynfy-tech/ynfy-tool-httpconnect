@@ -157,7 +157,7 @@ public class HttpPostUtil extends InitUtil {
                 requestParams.append("Content-Type: text/plain; charset=utf-8").append(LINE_END);
                 requestParams.append("Content-Transfer-Encoding: 8bit").append(LINE_END);
                 requestParams.append(LINE_END);// 参数头设置完以后需要两个换行，然后才是参数内容
-                requestParams.append("ori2.jpeg");
+                requestParams.append(file.getName());
                 requestParams.append(LINE_END);
                 out.write(requestParams.toString().getBytes());
                 out.flush();
@@ -169,7 +169,7 @@ public class HttpPostUtil extends InitUtil {
                 requestParams.append("Content-Disposition: form-data; name=\"")
                              .append("file")
                              .append("\"; filename=\"")
-                             .append("ori2.jpeg")
+                             .append(file.getName())
                              .append("\"")
                              .append(LINE_END);
                 requestParams.append("Content-Type:").append("multipart/form-data").append(LINE_END);
