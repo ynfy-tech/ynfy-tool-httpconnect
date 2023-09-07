@@ -1,14 +1,21 @@
 package http;
 
 
+import http.constant.HttpEnum;
 import http.constant.ProtocolConstant;
 import http.constant.TimeConstant;
-import http.constant.HttpEnum;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
-import java.net.*;
+import java.net.HttpURLConnection;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -183,9 +190,23 @@ public class InitUtil {
                 if (filedValue == null) {
                     continue;
                 }
+
                 fieldName = URLEncoder.encode(fieldName, StandardCharsets.UTF_8);
-                String filedValueStr = URLEncoder.encode(filedValue.toString(), StandardCharsets.UTF_8);
-                urlNameString.append(fieldName).append("=").append(filedValueStr).append("&");
+                
+                if (filedValue instanceof Iterator) {
+                    Iterator castList = (Iterator) filedValue;
+                    while(castList.hasNext()) {
+                        String s = (String)castList.next();
+                        String filedValueStr = URLEncoder.encode(s, StandardCharsets.UTF_8);
+                        urlNameString.append(fieldName).append("=").append(filedValueStr).append("&");
+                    }
+                } else {
+                    String filedValueStr = URLEncoder.encode(filedValue.toString(), StandardCharsets.UTF_8);
+                    urlNameString.append(fieldName).append("=").append(filedValueStr).append("&");
+                }
+                
+                
+
             }
         }
         return urlNameString.toString();
