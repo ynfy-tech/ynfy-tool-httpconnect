@@ -15,7 +15,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Iterator;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -192,12 +192,10 @@ public class InitUtil {
                 }
 
                 fieldName = URLEncoder.encode(fieldName, StandardCharsets.UTF_8);
-                
-                if (filedValue instanceof Iterator) {
-                    Iterator castList = (Iterator) filedValue;
-                    while(castList.hasNext()) {
-                        String s = (String)castList.next();
-                        String filedValueStr = URLEncoder.encode(s, StandardCharsets.UTF_8);
+                if (filedValue instanceof Collection) {
+                    Collection collection = (Collection) filedValue;
+                    for (Object s : collection) {
+                        String filedValueStr = URLEncoder.encode((String) s, StandardCharsets.UTF_8);
                         urlNameString.append(fieldName).append("=").append(filedValueStr).append("&");
                     }
                 } else {
