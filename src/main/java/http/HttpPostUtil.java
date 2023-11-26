@@ -100,6 +100,7 @@ public class HttpPostUtil extends InitUtil {
     private final String LINE_END = "\r\n";
 
     /**
+     *
      * 发送 post 文件请求
      *
      * @param url      远程接口路径
@@ -110,6 +111,24 @@ public class HttpPostUtil extends InitUtil {
      * @return T 所代表远程资源的响应结果
      */
     public <T> String sendFile(String url, Map<String, String> header, T paramObj, String dir) {
+        File file = new File(dir);
+        if (!file.exists()) {
+            throw new IllegalArgumentException("文件不存在");
+        }
+        return sendFile(url, header, paramObj, file);
+    }
+
+        /**
+         * 发送 post 文件请求
+         *
+         * @param url      远程接口路径
+         * @param paramObj 泛型出参
+         * @param file      文件
+         * @param header   请求头
+         * @param <T>      泛型入参
+         * @return T 所代表远程资源的响应结果
+         */
+    public <T> String sendFile(String url, Map<String, String> header, T paramObj, File file) {
         String urlParams = appendGetUrlParam(url, paramObj);
         HttpURLConnection connection = null;
         try {
@@ -136,11 +155,6 @@ public class HttpPostUtil extends InitUtil {
             connection.connect();
         } catch (Exception e) {
             throw new IllegalArgumentException(e.getMessage(), e);
-        }
-
-        File file = new File(dir);
-        if (!file.exists()) {
-            throw new IllegalArgumentException("文件不存在");
         }
 
         try (DataOutputStream out = new DataOutputStream(connection.getOutputStream());
