@@ -16,7 +16,7 @@ mvn clean deploy -P release
 <dependency>
     <groupId>tech.ynfy</groupId>
     <artifactId>ynfy-tool-httpconnect</artifactId>
-    <version>1.1.8</version>
+    <version>1.1.9</version>
 </dependency>
 ```
 
