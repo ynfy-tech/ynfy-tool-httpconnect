@@ -174,7 +174,9 @@ public class InitUtil {
             if (String.class.equals(paramObj.getClass())) {
                 throw new IllegalArgumentException("Param can't be string! ");
             }
-            urlNameString.append("?");
+            
+            urlNameString.append(url.contains("?") ? "&" : "?"); // 使用三元运算符来决定是追加 '&' 还是 '?'
+            
             Class c = paramObj.getClass();
             Field[] fields = c.getDeclaredFields();
             for (Field field : fields) {
@@ -195,6 +197,15 @@ public class InitUtil {
                 if (filedValue instanceof Collection) {
                     Collection collection = (Collection) filedValue;
                     for (Object s : collection) {
+                        
+                        if (s == null) {
+                            continue;
+                        }
+                        
+                        if (!String.class.equals(s.getClass())) {
+                            throw new IllegalArgumentException("List param should be string! ");
+                        }
+                        
                         String filedValueStr = URLEncoder.encode((String) s, StandardCharsets.UTF_8);
                         urlNameString.append(fieldName).append("=").append(filedValueStr).append("&");
                     }
