@@ -24,7 +24,7 @@ Migrate the repository: https://blog.csdn.net/ryo1060732496/article/details/1492
 ```
 
 # Change Notes
-+ [v1.1.10](https://github.com/ynfy-tech/ynfy-tool-httpconnect/releases/tag/v1.1.11)
++ [v1.1.11](https://github.com/ynfy-tech/ynfy-tool-httpconnect/releases/tag/v1.1.11)
   + re-resolved [#48](https://github.com/ynfy-tech/ynfy-tool-httpconnect/issues/48)
   + Migrate to [Central Publisher Portal](https://central.sonatype.com/)
 + [v1.1.10](https://github.com/ynfy-tech/ynfy-tool-httpconnect/releases/tag/v1.1.10)
