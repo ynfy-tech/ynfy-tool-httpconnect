@@ -12,17 +12,21 @@ mvn clean deploy
 mvn clean deploy -P release
 
 # Maven Dependency
+As of June 30, 2025 [OSSRH](https://s01.oss.sonatype.org/) has reached end of life and has been shut down. 
+All OSSRH namespaces have been migrated to [Central Publisher Portal](https://central.sonatype.com/).
+Migrate the repository: https://blog.csdn.net/ryo1060732496/article/details/149292696
 ```
 <dependency>
     <groupId>tech.ynfy</groupId>
     <artifactId>ynfy-tool-httpconnect</artifactId>
-    <version>1.1.10</version>
+    <version>1.1.11</version>
 </dependency>
 ```
 
 # Change Notes
 + [v1.1.10](https://github.com/ynfy-tech/ynfy-tool-httpconnect/releases/tag/v1.1.11)
   + re-resolved [#48](https://github.com/ynfy-tech/ynfy-tool-httpconnect/issues/48)
+  + Migrate to [Central Publisher Portal](https://central.sonatype.com/)
 + [v1.1.10](https://github.com/ynfy-tech/ynfy-tool-httpconnect/releases/tag/v1.1.10)
   + re-resolved [#46](https://github.com/ynfy-tech/ynfy-tool-httpconnect/issues/46)
   + re-resolved [#47](https://github.com/ynfy-tech/ynfy-tool-httpconnect/issues/47)
