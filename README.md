@@ -21,6 +21,8 @@ mvn clean deploy -P release
 ```
 
 # Change Notes
++ [v1.1.10](https://github.com/ynfy-tech/ynfy-tool-httpconnect/releases/tag/v1.1.11)
+  + re-resolved [#48](https://github.com/ynfy-tech/ynfy-tool-httpconnect/issues/48)
 + [v1.1.10](https://github.com/ynfy-tech/ynfy-tool-httpconnect/releases/tag/v1.1.10)
   + re-resolved [#46](https://github.com/ynfy-tech/ynfy-tool-httpconnect/issues/46)
   + re-resolved [#47](https://github.com/ynfy-tech/ynfy-tool-httpconnect/issues/47)

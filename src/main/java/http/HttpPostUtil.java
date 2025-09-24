@@ -83,6 +83,19 @@ public class HttpPostUtil extends InitUtil {
     public String send(String url, Map<String, String> header, Object param) {
         return sendPostOrPutConnection(url, HttpEnum.POST, header, JSON.toJSONString(param));
     }
+    
+    /**
+     * 向指定 URL 发送POST方法的请求
+     *
+     * @param url    发送请求的 URL
+     * @param param  请求参数，Object
+     * @param header 请求头
+     * @param urlParam 查询参数
+     * @return T 所代表远程资源的响应结果
+     */
+    public String send(String url, Map<String, String> header, Object param, Object urlParam) {
+        return sendPostOrPutConnection(appendGetUrlParam(url, urlParam), HttpEnum.POST, header, JSON.toJSONString(param));
+    }
 
     /**
      * 边界标识
