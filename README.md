@@ -19,11 +19,13 @@ Migrate the repository: https://blog.csdn.net/ryo1060732496/article/details/1492
 <dependency>
     <groupId>tech.ynfy</groupId>
     <artifactId>ynfy-tool-httpconnect</artifactId>
-    <version>1.1.11</version>
+    <version>1.1.12</version>
 </dependency>
 ```
 
 # Change Notes
++ [v1.1.12](https://github.com/ynfy-tech/ynfy-tool-httpconnect/releases/tag/v1.1.12)
+  + resolved [#49](https://github.com/ynfy-tech/ynfy-tool-httpconnect/issues/49)
 + [v1.1.11](https://github.com/ynfy-tech/ynfy-tool-httpconnect/releases/tag/v1.1.11)
   + resolved [#48](https://github.com/ynfy-tech/ynfy-tool-httpconnect/issues/48)
   + Migrate to [Central Publisher Portal](https://central.sonatype.com/)

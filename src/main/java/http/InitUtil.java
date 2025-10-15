@@ -4,6 +4,7 @@ package http;
 import http.constant.HttpEnum;
 import http.constant.ProtocolConstant;
 import http.constant.TimeConstant;
+import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -16,6 +17,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -177,8 +179,8 @@ public class InitUtil {
             
             urlNameString.append(url.contains("?") ? "&" : "?"); // 使用三元运算符来决定是追加 '&' 还是 '?'
             
-            Class c = paramObj.getClass();
-            Field[] fields = c.getDeclaredFields();
+            // 直接获取包含父类的字段
+            List<Field> fields = FieldUtils.getAllFieldsList(paramObj.getClass());
             for (Field field : fields) {
                 field.setAccessible(true);
                 String fieldName = field.getName();
