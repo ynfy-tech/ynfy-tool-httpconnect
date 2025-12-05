@@ -4,6 +4,9 @@ A http client for java, based on `HttpURLConnection`. Support get/post/put/delet
 
 Simple, effective, and highly expandable ~
 
+# Use
+mvn clean install
+
 # Deploy
 ## Snapshot
 mvn clean deploy
