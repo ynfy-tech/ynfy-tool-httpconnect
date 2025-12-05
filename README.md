@@ -24,6 +24,8 @@ Migrate the repository: https://blog.csdn.net/ryo1060732496/article/details/1492
 ```
 
 # Change Notes
++ [v1.1.13](https://github.com/ynfy-tech/ynfy-tool-httpconnect/releases/tag/v1.1.13)
+  + resolved [#50](https://github.com/ynfy-tech/ynfy-tool-httpconnect/issues/50)
 + [v1.1.12](https://github.com/ynfy-tech/ynfy-tool-httpconnect/releases/tag/v1.1.12)
   + resolved [#49](https://github.com/ynfy-tech/ynfy-tool-httpconnect/issues/49)
 + [v1.1.11](https://github.com/ynfy-tech/ynfy-tool-httpconnect/releases/tag/v1.1.11)
