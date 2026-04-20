@@ -128,7 +128,26 @@ public class HttpPostUtil extends InitUtil {
         if (!file.exists()) {
             throw new IllegalArgumentException("文件不存在");
         }
-        return sendFile(url, header, paramObj, file);
+        return sendFile(url, header, paramObj, file, "file");
+    }
+
+    /**
+     * 发送 post 文件请求
+     *
+     * @param url           远程接口路径
+     * @param paramObj      泛型出参
+     * @param dir           文件本地路径
+     * @param fileFieldName multipart 文件字段名
+     * @param header        请求头
+     * @param <T>           泛型入参
+     * @return T 所代表远程资源的响应结果
+     */
+    public <T> String sendFile(String url, Map<String, String> header, T paramObj, String dir, String fileFieldName) {
+        File file = new File(dir);
+        if (!file.exists()) {
+            throw new IllegalArgumentException("文件不存在");
+        }
+        return sendFile(url, header, paramObj, file, fileFieldName);
     }
 
         /**
@@ -142,7 +161,26 @@ public class HttpPostUtil extends InitUtil {
          * @return T 所代表远程资源的响应结果
          */
     public <T> String sendFile(String url, Map<String, String> header, T paramObj, File file) {
+        return sendFile(url, header, paramObj, file, "file");
+    }
+
+    /**
+     * 发送 post 文件请求
+     *
+     * @param url           远程接口路径
+     * @param paramObj      泛型出参
+     * @param file          文件
+     * @param fileFieldName multipart 文件字段名
+     * @param header        请求头
+     * @param <T>           泛型入参
+     * @return T 所代表远程资源的响应结果
+     */
+    public <T> String sendFile(String url, Map<String, String> header, T paramObj, File file, String fileFieldName) {
         String urlParams = appendGetUrlParam(url, paramObj);
+        String actualFileFieldName = fileFieldName;
+        if (actualFileFieldName == null || actualFileFieldName.trim().length() == 0) {
+            actualFileFieldName = "file";
+        }
         HttpURLConnection connection = null;
         try {
             URL uri = new URL(urlParams);
@@ -178,7 +216,7 @@ public class HttpPostUtil extends InitUtil {
                 StringBuilder requestParams = new StringBuilder();
                 requestParams.append(PREFIX).append(BOUNDARY).append(LINE_END);
                 requestParams.append("Content-Disposition: form-data; name=\"")
-                             .append("file")
+                             .append(actualFileFieldName)
                              .append("\"")
                              .append(LINE_END);
                 requestParams.append("Content-Type: text/plain; charset=utf-8").append(LINE_END);
@@ -194,7 +232,7 @@ public class HttpPostUtil extends InitUtil {
                 requestParams = new StringBuilder();
                 requestParams.append(PREFIX).append(BOUNDARY).append(LINE_END);
                 requestParams.append("Content-Disposition: form-data; name=\"")
-                             .append("file")
+                             .append(actualFileFieldName)
                              .append("\"; filename=\"")
                              .append(file.getName())
                              .append("\"")

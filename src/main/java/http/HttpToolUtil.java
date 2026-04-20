@@ -131,6 +131,29 @@ public class HttpToolUtil {
     }
 
     /**
+     * 发送 post 文件请求
+     *
+     * @param url           远程接口地址
+     * @param paramObj      返回类型
+     * @param dir           文件路径
+     * @param fileFieldName multipart 文件字段名
+     * @param header        消息头
+     * @param responseClass 子类型
+     * @param <T>           返回类型
+     * @param <M>           子类型
+     * @return T 所代表远程资源的响应结果
+     */
+    public <T, M> M sendPost(String url,
+                             Map<String, String> header,
+                             T paramObj,
+                             String dir,
+                             String fileFieldName,
+                             Class<M> responseClass) {
+        String result = Static.postUtil.sendFile(url, header, paramObj, dir, fileFieldName);
+        return JSONObject.parseObject(result, responseClass);
+    }
+
+    /**
      * Default constructor added by Java.
      */
     public HttpToolUtil() {
